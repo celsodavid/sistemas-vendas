@@ -1,0 +1,1 @@
+INSERT INTO `vendas`.`usuarios` (`usunome`, `usulogin`, `ususenha`) VALUES ('Celso Lopes', 'clopes', MD5('123456'));

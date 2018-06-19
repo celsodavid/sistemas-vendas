@@ -1,0 +1,36 @@
+version: "3.1"
+services:
+  webservice:
+    build: .docker/php
+    container_name: vendas-webserver
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html/
+      - ./.docker/apache/apache.conf:/etc/apache2/sites-enabled/000-default.conf
+      - ./.docker/php/php-ini-overrides.ini:/usr/local/etc/php/php.ini
+    ports:
+      - 8090:80
+#    links:
+#      - db
+    restart: always
+    networks:
+      - default
+
+  db:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_DATABASE=vendas
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=admin
+    volumes:
+      - ./.docker/mysql/schemas:/docker-entrypoint-initdb.d
+    ports:
+      - 3307:3306
+    restart: always
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge
